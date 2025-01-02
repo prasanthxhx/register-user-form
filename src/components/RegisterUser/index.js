@@ -36,7 +36,7 @@ const RegisterForm = () => {
     setSuccess(null);
 
     try {
-      const response = await fetch("", {
+      const response = await fetch("http://127.0.0.1:8080/api/users/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -49,12 +49,15 @@ const RegisterForm = () => {
         }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error("Failed to register. Please try again later.");
+        throw new Error(
+          data.message || "Failed to register. Please try again later."
+        );
       }
 
-      const data = await response.json();
-      setSuccess("Registration successful!");
+      setSuccess(data.message);
       setFormData({
         firstname: "",
         lastname: "",
